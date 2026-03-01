@@ -1,0 +1,30 @@
+version: "3.8"
+services:
+  app:
+    image: mcr.microsoft.com/devcontainers/php:8.3
+    volumes:
+      - ..:/workspaces/ProgPHP:cached
+    command: sleep infinity
+    networks:
+      - laravelnet
+    depends_on:
+      - mariadb
+  mariadb:
+    image: bitnami/mariadb:11
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      - MARIADB_USER=bn_myapp
+      - MARIADB_DATABASE=bitnami_myapp
+      - MARIADB_PASSWORD=b1tnam1_my@pp
+    ports:
+      - "3306:3306"
+    networks:
+      - laravelnet
+    volumes:
+      - mariadb_data:/bitnami/mariadb
+networks:
+  laravelnet:
+    driver: bridge
+volumes:
+  mariadb_data:
+    driver: local
